@@ -4,6 +4,7 @@
 .PHONY: up
 up: ## Spin up all containers
 	cp .env.example .env
+	docker run --rm -v "$(PWD)":/app -w /app php:8.4-cli bash -c "apt-get update && apt-get install -y unzip && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && composer install"
 	./vendor/bin/sail up -d
 	./vendor/bin/sail exec app php artisan migrate
 	./vendor/bin/sail exec app php artisan db:seed
